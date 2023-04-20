@@ -20,13 +20,19 @@ bulkboto_agent = BulkBoto3(
 # create a new bucket
 # bulkboto_agent.create_new_bucket(bucket_name=TARGET_BUCKET)
 def upload_images():
-    # upload a whole directory with its structure to an S3 bucket in multi thread mode
-    bulkboto_agent.upload_dir_to_storage(
-        bucket_name=TARGET_BUCKET,
-        local_dir="Pokemon",
-        storage_dir="pokemon",
-        n_threads=NUM_TRANSFER_THREADS,
-    )
+    try:
+        bulkboto_agent.create_new_bucket(TARGET_BUCKET)
+    except Exception as e:
+        print(e)
+    
+    finally:
+        # upload a whole directory with its structure to an S3 bucket in multi thread mode
+        bulkboto_agent.upload_dir_to_storage(
+            bucket_name=TARGET_BUCKET,
+            local_dir="Pokemon",
+            storage_dir="pokemon",
+            n_threads=NUM_TRANSFER_THREADS,
+        )
 
 
 def list_buckets():
@@ -54,7 +60,7 @@ def get_image(file):
 
 
 if __name__ == "__main__":
-    # upload_images()
+    upload_images()
     # list_buckets()
-    get_image('pokemon\\001Bulbasaur.png')
+    # get_image('pokemon\\001Bulbasaur.png')
 
